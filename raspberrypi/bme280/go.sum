@@ -1,0 +1,14 @@
+github.com/d2r2/go-bsbmp v0.0.0-20180613192852-f11ebed5cf1e h1:ukO9uQAdXMcw2hyj340fJGxlqXat0m137nvMhxeaGpU=
+github.com/d2r2/go-bsbmp v0.0.0-20180613192852-f11ebed5cf1e/go.mod h1:3iz1WHlYJU9b4NJei+Q8G7DN3K05arcCMlOQ+qNCDjo=
+github.com/d2r2/go-i2c v0.0.0-20181014034210-1cba76186e81 h1:+cwLjfPEqkQDXgOQYMtmyp+Mn4fJGVF6zo7MPV61SiA=
+github.com/d2r2/go-i2c v0.0.0-20181014034210-1cba76186e81/go.mod h1:AwxDPnsgIpy47jbGXZHA9Rv7pDkOJvQbezPuK1Y+nNk=
+github.com/d2r2/go-logger v0.0.0-20181002101108-49d264032daf h1:w86yqNbKRq01cCM+87jWC1/z3E/Nts5x0FcETRAAGgc=
+github.com/d2r2/go-logger v0.0.0-20181002101108-49d264032daf/go.mod h1:oA+9PUt8F1aKJ6o4YU1T120i7sgo1T6/1LWEEBy0BSs=
+github.com/d2r2/go-shell v0.0.0-20181002100851-c94f62cb3f85 h1:J6zsXuxVaMnX0CXjlyWuIQiIgtoVme+8iA5sR4TCip8=
+github.com/d2r2/go-shell v0.0.0-20181002100851-c94f62cb3f85/go.mod h1:FdrNob+jQ3UkEpNVeZFVn8mW86Aa2wa6U5z0vGQOEXQ=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/eclipse/paho.mqtt.golang v1.1.1 h1:iPJYXJLaViCshRTW/PSqImSS6HJ2Rf671WR0bXZ2GIU=
+github.com/eclipse/paho.mqtt.golang v1.1.1/go.mod h1:H9keYFcgq3Qr5OUJm/JZI/i6U7joQ8SYLhZwfeOo6Ts=
+golang.org/x/net v0.0.0-20181011144130-49bb7cea24b1 h1:Y/KGZSOdz/2r0WJ9Mkmz6NJBusp0kiNx1Cn82lzJQ6w=
+golang.org/x/net v0.0.0-20181011144130-49bb7cea24b1/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
