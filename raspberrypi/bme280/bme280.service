@@ -1,0 +1,12 @@
+[Unit]
+Description=BME280
+After=syslog.target
+
+[Service]
+EnvironmentFile=/home/pi/bme280.env
+ExecStart=/home/pi/bme280
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
