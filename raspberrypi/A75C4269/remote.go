@@ -38,10 +38,10 @@ type Remote struct {
 func (r *Remote) GetSignalBytes() (result []byte) {
 	var b byte
 
-	// 1-6byte: header
-	result = append(result, 0x02, 0x20, 0x00, 0x0E, 0x04, 0x00)
+	// 1-5byte: header
+	result = append(result, 0x02, 0x20, 0x0E, 0x04, 0x00)
 
-	// 7byte: mode, timer, power
+	// 6byte: mode, timer, power
 	b = 0
 	switch r.Mode {
 	case ModeCooler:
@@ -68,7 +68,7 @@ func (r *Remote) GetSignalBytes() (result []byte) {
 	}
 	result = append(result, b)
 
-	// 8byte: temp
+	// 7byte: temp
 	b = 0x20 // 00100000
 	switch {
 	case r.PresetTemp < 16:
@@ -80,11 +80,11 @@ func (r *Remote) GetSignalBytes() (result []byte) {
 	}
 	result = append(result, b)
 
-	// 9byte: ?
+	// 8byte: ?
 	b = 0x80
 	result = append(result, b)
 
-	// 10byte: air volume, wind direction
+	// 9byte: air volume, wind direction
 	switch r.AirVolume {
 	case AirVolumeAuto:
 		b = 0xA << 4 // 1010
@@ -117,48 +117,52 @@ func (r *Remote) GetSignalBytes() (result []byte) {
 	}
 	result = append(result, b)
 
-	// 11byte: ?
+	// 10byte: ?
 	b = 0x00
 	result = append(result, b)
 
-	// 12byte: timer setting
+	// 11byte: timer setting
 	b = 0
 	if r.Power == PowerOffAndOnTimer || r.Power == PowerOnAndOffTimer {
 		b = 0x3C
 	}
 	result = append(result, b)
 
-	// 13-14byte: timer hour
-	switch r.TimerHour {
-	case 1:
-		result = append(result, 0xC0, 0x03) // 11000000 00000011
-	case 2:
-		result = append(result, 0x80, 0x07) // 10000000 00000111
-	case 3:
-		result = append(result, 0x40, 0x0B) // 01000000 00001011
-	case 4:
-		result = append(result, 0x00, 0x0F) // 00000000 00001111
-	case 5:
-		result = append(result, 0xC0, 0x12) // 11000000 00010010
-	case 6:
-		result = append(result, 0x80, 0x16) // 10000000 00010110
-	case 7:
-		result = append(result, 0x40, 0x1A) // 01000000 00011010
-	case 8:
-		result = append(result, 0x00, 0x1E) // 00000000 00011110
-	case 9:
-		result = append(result, 0xC0, 0x21) // 11000000 00100001
-	case 10:
-		result = append(result, 0x80, 0x25) // 10000000 00100101
-	case 11:
-		result = append(result, 0x40, 0x29) // 01000000 00101001
-	case 12:
-		result = append(result, 0x00, 0x2D) // 00000000 00101101
-	default:
-		result = append(result, 0xC0, 0x03) // 1 hour
+	// 12-13byte: timer hour
+	if r.Power == PowerOnAndOffTimer || r.Power == PowerOffAndOnTimer {
+		switch r.TimerHour {
+		case 1:
+			result = append(result, 0xC0, 0x03) // 11000000 00000011
+		case 2:
+			result = append(result, 0x80, 0x07) // 10000000 00000111
+		case 3:
+			result = append(result, 0x40, 0x0B) // 01000000 00001011
+		case 4:
+			result = append(result, 0x00, 0x0F) // 00000000 00001111
+		case 5:
+			result = append(result, 0xC0, 0x12) // 11000000 00010010
+		case 6:
+			result = append(result, 0x80, 0x16) // 10000000 00010110
+		case 7:
+			result = append(result, 0x40, 0x1A) // 01000000 00011010
+		case 8:
+			result = append(result, 0x00, 0x1E) // 00000000 00011110
+		case 9:
+			result = append(result, 0xC0, 0x21) // 11000000 00100001
+		case 10:
+			result = append(result, 0x80, 0x25) // 10000000 00100101
+		case 11:
+			result = append(result, 0x40, 0x29) // 01000000 00101001
+		case 12:
+			result = append(result, 0x00, 0x2D) // 00000000 00101101
+		default:
+			result = append(result, 0xC0, 0x03) // 1 hour
+		}
+	} else {
+		result = append(result, 0x06, 0x60) // 00000110 01100000
 	}
 
-	// 15byte: Various Flags
+	// 14byte: Various Flags
 	b = 0
 	if r.AirVolume == AirVolumeStill {
 		b |= 1
@@ -169,7 +173,7 @@ func (r *Remote) GetSignalBytes() (result []byte) {
 	}
 	result = append(result, b)
 
-	// 16byte: Various Flags
+	// 15byte: Various Flags
 	b = 0
 	if r.PresetTemp <= 16 || r.PresetTemp >= 30 {
 		b |= 1
@@ -177,21 +181,21 @@ func (r *Remote) GetSignalBytes() (result []byte) {
 	b <<= 1
 	result = append(result, b)
 
-	// 17byte: ?
+	// 16byte: ?
 	b = 0x80
 	result = append(result, b)
 
-	// 18byte: ?
+	// 17byte: ?
 	b = 0x00
 	result = append(result, b)
 
-	// 19byte: ?
+	// 18byte: ?
 	b = 0x06
 	result = append(result, b)
 
-	// 20byte: checksum
+	// 19byte: checksum
 	sum := 0x6
-	for i := 6; i < 19; i++ {
+	for i := 5; i < 18; i++ {
 		sum += int(result[i])
 	}
 	b = byte(0xFF & sum)
