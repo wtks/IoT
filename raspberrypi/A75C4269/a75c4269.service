@@ -1,0 +1,13 @@
+[Unit]
+Description=A75C4269 RemoCon
+After=syslog.target network-online.target
+
+[Service]
+EnvironmentFile=/home/pi/a75c4269.env
+ExecStart=/home/pi/a75c4269
+Restart=always
+Type=simple
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target network-online.target
