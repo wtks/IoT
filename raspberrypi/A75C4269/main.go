@@ -22,17 +22,42 @@ var (
 
 func main() {
 	config := gopi.NewAppConfig("lirc")
+	config.AppFlags.FlagBool("on", false, "power on")
+	config.AppFlags.FlagString("mode", "cooler", "cooler or heater or dehumidifier")
+	config.AppFlags.FlagUint("t", 28, "16-30 ℃")
+
 	os.Exit(gopi.CommandLineTool(config, func(app *gopi.AppInstance, done chan<- struct{}) error {
 		if app.LIRC == nil {
-			return errors.New("Missing LIRC module")
+			return errors.New("missing LIRC module")
 		}
 
 		var d []uint32
 		d = append(d, appendTracerSpace(convertRawSignal(CallSign))...)
 
-		r := Remote{
-			Power: PowerOff,
+		r := Remote{}
+
+		on, _ := app.AppFlags.GetBool("on")
+		if on {
+			r.Power = PowerOn
+		} else {
+			r.Power = PowerOff
 		}
+
+		mode, _ := app.AppFlags.GetString("mode")
+		switch mode {
+		case "cooler":
+			r.Mode = ModeCooler
+		case "heater":
+			r.Mode = ModeHeater
+		case "dehumidifier":
+			r.Mode = ModeDehumidifier
+		default:
+			r.Mode = ModeCooler
+		}
+
+		t, _ := app.AppFlags.GetUint("t")
+		r.PresetTemp = t
+
 		d = append(d, convertRawSignal(r.GetSignalBytes())...)
 
 		if err := app.LIRC.PulseSend(d); err != nil {

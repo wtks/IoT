@@ -10,12 +10,12 @@ const (
 	ModeHeater
 	ModeDehumidifier
 
-	DirectionAuto byte = iota
-	Direction1
-	Direction2
-	Direction3
-	Direction4
-	Direction5
+	WindDirectionAuto byte = iota
+	WindDirection1
+	WindDirection2
+	WindDirection3
+	WindDirection4
+	WindDirection5
 
 	AirVolumeAuto byte = iota
 	AirVolumeStill
@@ -100,17 +100,17 @@ func (r *Remote) GetSignalBytes() (result []byte) {
 		b = 0xA << 4 // Auto
 	}
 	switch r.WindDirection {
-	case DirectionAuto:
+	case WindDirectionAuto:
 		b |= 0xF // 1111
-	case Direction1:
+	case WindDirection1:
 		b |= 0x1 // 0001
-	case Direction2:
+	case WindDirection2:
 		b |= 0x2 // 0010
-	case Direction3:
+	case WindDirection3:
 		b |= 0x3 // 0011
-	case Direction4:
+	case WindDirection4:
 		b |= 0x4 // 0100
-	case Direction5:
+	case WindDirection5:
 		b |= 0x5 // 0101
 	default:
 		b |= 0xF // Auto
