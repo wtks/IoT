@@ -11,6 +11,7 @@ import (
 	"github.com/wtks/A75C4269"
 	"log"
 	"os"
+	"os/signal"
 )
 
 const (
@@ -22,6 +23,9 @@ const (
 var MQTTHost = os.Getenv("MQTT_HOST")
 
 func main() {
+	sigint := make(chan os.Signal, 1)
+	signal.Notify(sigint, os.Interrupt, os.Kill)
+
 	// init mqtt client
 	mqttOpt := mqtt.NewClientOptions()
 	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s:1883", MQTTHost))
@@ -35,32 +39,41 @@ func main() {
 
 	config := gopi.NewAppConfig("lirc")
 
+	recv := make(chan mqtt.Message)
+	token := client.Subscribe(SubTopic, 0, func(_ mqtt.Client, msg mqtt.Message) {
+		recv <- msg
+	})
+	if token.Wait() && token.Error() != nil {
+		log.Fatal(token.Error())
+	}
+
 	os.Exit(gopi.CommandLineTool(config, func(app *gopi.AppInstance, done chan<- struct{}) error {
 		if app.LIRC == nil {
 			return errors.New("missing LIRC module")
 		}
 
-		token := client.Subscribe(SubTopic, 0, func(client mqtt.Client, msg mqtt.Message) {
-			c := A75C4269.Controller{}
-			if err := json.Unmarshal(msg.Payload(), &c); err != nil {
-				app.Logger.Error(err.Error())
-				return
-			}
+		for {
+			select {
+			case <-sigint:
+				done <- gopi.DONE
+				return nil
+			case msg := <-recv:
+				c := A75C4269.Controller{}
+				if err := json.Unmarshal(msg.Payload(), &c); err != nil {
+					app.Logger.Error(err.Error())
+					break
+				}
 
-			if err := app.LIRC.PulseSend(c.GetRawSignal()); err != nil {
-				app.Logger.Error(err.Error())
-				return
-			}
+				if err := app.LIRC.PulseSend(c.GetRawSignal()); err != nil {
+					return err
+				}
 
-			token := client.Publish(PubTopic, 0, false, string(msg.Payload()))
-			if token.Wait() && token.Error() != nil {
-				app.Logger.Error(token.Error().Error())
-				return
+				token := client.Publish(PubTopic, 0, false, string(msg.Payload()))
+				if token.Wait() && token.Error() != nil {
+					app.Logger.Error(token.Error().Error())
+					break
+				}
 			}
-		})
-
-		if token.Wait() && token.Error() != nil {
-			return token.Error()
 		}
 
 		done <- gopi.DONE
