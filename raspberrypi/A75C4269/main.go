@@ -81,14 +81,14 @@ func convertRawSignal(bytes []byte) []uint32 {
 
 	// Parity & Data0
 	var i uint
-	for i = 5; i < 8; i++ {
+	for i = 4; i < 8; i++ {
 		if refBit(bytes[2], i) == 1 {
 			seq = appendBit1(seq)
 		} else {
 			seq = appendBit0(seq)
 		}
 	}
-	for i = 0; i < 5; i++ {
+	for i = 0; i < 4; i++ {
 		if refBit(bytes[2], i) == 1 {
 			seq = appendBit1(seq)
 		} else {
