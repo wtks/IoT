@@ -68,7 +68,8 @@ func main() {
 					return err
 				}
 
-				token := client.Publish(PubTopic, 0, false, string(msg.Payload()))
+				payload, _ := json.Marshal(c)
+				token := client.Publish(PubTopic, 0, false, string(payload))
 				if token.Wait() && token.Error() != nil {
 					app.Logger.Error(token.Error().Error())
 					break
