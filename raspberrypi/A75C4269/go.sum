@@ -17,6 +17,8 @@ github.com/miekg/dns v1.0.8/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nr
 github.com/olekukonko/tablewriter v0.0.0-20180506121414-d4647c9c7a84/go.mod h1:vsDQFd/mU46D+Z4whnwzcISnGGzXWMclvtLoiIKAKIo=
 github.com/wtks/A75C4269 v0.1.1 h1:3plHiBxMAo/JZZ7o3kTu4voZiJLXNyRDjM5K+oBFk44=
 github.com/wtks/A75C4269 v0.1.1/go.mod h1:9aDkl9DWdnXbRpM83tDozCFDNV4CtwCZEYEAYIaE9rQ=
+github.com/wtks/A75C4269 v0.2.0 h1:awr0WqiKI0dm+qX3WIhtWjV3mEvtvhqIlj3kR+wXXR8=
+github.com/wtks/A75C4269 v0.2.0/go.mod h1:9aDkl9DWdnXbRpM83tDozCFDNV4CtwCZEYEAYIaE9rQ=
 golang.org/x/crypto v0.0.0-20180820150726-614d502a4dac/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20180904163835-0709b304e793/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/net v0.0.0-20180826012351-8a410e7b638d/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
