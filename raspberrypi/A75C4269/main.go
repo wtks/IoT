@@ -20,7 +20,11 @@ const (
 	PubTopic = "/aircon/state"
 )
 
-var MQTTHost = os.Getenv("MQTT_HOST")
+var (
+	MQTTHost     = os.Getenv("MQTT_HOST")
+	MQTTUserName = os.Getenv("MQTT_USERNAME")
+	MQTTPassword = os.Getenv("MQTT_PASSWORD")
+)
 
 func main() {
 	sigint := make(chan os.Signal, 1)
@@ -29,6 +33,8 @@ func main() {
 	// init mqtt client
 	mqttOpt := mqtt.NewClientOptions()
 	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s:1883", MQTTHost))
+	mqttOpt.SetUsername(MQTTUserName)
+	mqttOpt.SetPassword(MQTTPassword)
 	mqttOpt.SetClientID(ClientID)
 
 	client := mqtt.NewClient(mqttOpt)
@@ -69,7 +75,7 @@ func main() {
 				}
 
 				payload, _ := json.Marshal(c)
-				token := client.Publish(PubTopic, 0, false, string(payload))
+				token := client.Publish(PubTopic, 1, true, string(payload))
 				if token.Wait() && token.Error() != nil {
 					app.Logger.Error(token.Error().Error())
 					break
