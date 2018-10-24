@@ -21,7 +21,9 @@ const (
 )
 
 var (
-	MQTTHost = os.Getenv("MQTT_HOST")
+	MQTTHost     = os.Getenv("MQTT_HOST")
+	MQTTUserName = os.Getenv("MQTT_USERNAME")
+	MQTTPassword = os.Getenv("MQTT_PASSWORD")
 )
 
 func main() {
@@ -31,6 +33,8 @@ func main() {
 	// init mqtt client
 	mqttOpt := mqtt.NewClientOptions()
 	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s:1883", MQTTHost))
+	mqttOpt.SetUsername(MQTTUserName)
+	mqttOpt.SetPassword(MQTTPassword)
 	mqttOpt.SetClientID(ClientID)
 
 	client := mqtt.NewClient(mqttOpt)
