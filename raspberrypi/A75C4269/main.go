@@ -32,7 +32,7 @@ func main() {
 
 	// init mqtt client
 	mqttOpt := mqtt.NewClientOptions()
-	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s:1883", MQTTHost))
+	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s", MQTTHost))
 	mqttOpt.SetUsername(MQTTUserName)
 	mqttOpt.SetPassword(MQTTPassword)
 	mqttOpt.SetClientID(ClientID)
