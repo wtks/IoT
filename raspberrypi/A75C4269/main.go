@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/djthorpe/gopi"
 	_ "github.com/djthorpe/gopi-hw/sys/lirc"
 	_ "github.com/djthorpe/gopi/sys/logger"
@@ -32,7 +31,7 @@ func main() {
 
 	// init mqtt client
 	mqttOpt := mqtt.NewClientOptions()
-	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s", MQTTHost))
+	mqttOpt.AddBroker(MQTTHost)
 	mqttOpt.SetUsername(MQTTUserName)
 	mqttOpt.SetPassword(MQTTPassword)
 	mqttOpt.SetClientID(ClientID)
