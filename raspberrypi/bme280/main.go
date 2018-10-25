@@ -13,11 +13,8 @@ import (
 )
 
 const (
-	ClientID         = "rpizerow_bme280"
-	PubTopicTemp     = "/home/temperature"
-	PubTopicHumid    = "/home/humidity"
-	PubTopicPressure = "/home/pressure"
-	PubTopicMetrics  = "/home/metrics"
+	ClientID        = "rpizerow_bme280"
+	PubTopicMetrics = "/home/metrics"
 )
 
 var (
@@ -32,7 +29,7 @@ func main() {
 
 	// init mqtt client
 	mqttOpt := mqtt.NewClientOptions()
-	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s:1883", MQTTHost))
+	mqttOpt.AddBroker(fmt.Sprintf("tcp://%s", MQTTHost))
 	mqttOpt.SetUsername(MQTTUserName)
 	mqttOpt.SetPassword(MQTTPassword)
 	mqttOpt.SetClientID(ClientID)
@@ -82,9 +79,6 @@ func main() {
 				}
 				pressure /= 100
 				publish(client, PubTopicMetrics, fmt.Sprintf(`{"t":%2.2f,"h":%0.2f,"p":%f}`, temp, humid, pressure))
-				publish(client, PubTopicTemp, fmt.Sprintf("%2.2f", temp))
-				publish(client, PubTopicHumid, fmt.Sprintf("%0.2f", humid))
-				publish(client, PubTopicPressure, fmt.Sprintf("%f", pressure))
 			}
 		}
 	}()
